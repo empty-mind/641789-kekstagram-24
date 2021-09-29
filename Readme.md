@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Pavel Kuznetsov](https://up.htmlacademy.ru/javascript/24/user/641789).
-* Наставник: `Неизвестно`.
+* Наставник: [Никита Сигов](https://htmlacademy.ru/profile/crazer).
 
 ---
 
