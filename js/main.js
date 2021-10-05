@@ -54,12 +54,6 @@ const NAMES = [
 // Количество сгенерированных объектов (по условию 25)
 const GENERATED_OBJECTS_COUNT = 25;
 
-// Начальный идентификатор фотографии (по условию 1)
-const USER_PHOTO_START_ID = 1;
-
-// Начальное значение в ссылке на фото (по условию 1)
-const PHOTO_URL_START_VALUE = 1;
-
 // Минимальное количество лайков (по условию 15)
 const MIN_LIKES_COUNT = 15;
 
@@ -90,10 +84,10 @@ function getAvatarUrl () {
 }
 
 // Собирает объект - комментарий
-function createComment () {
+function createComment (index) {
 
   return {
-    id: getRandomPositiveInteger(0, 1000), // Случайное число по условию - но как сделать, чтобы не повторялись?
+    id: index,
     avatar: getAvatarUrl(),
     message: `${getRandomArrayElement(COMMENT_MESSAGES)} ${getRandomArrayElement(COMMENT_MESSAGES)}`,
     name:  getRandomArrayElement(NAMES),
@@ -115,11 +109,11 @@ function getCommentsList (commentsCount) {
 }
 
 // Собирает объект - описание фото
-function createUserPhotoDescription (photoId, photoUrl) {
+function createUserPhotoDescription (index) {
 
   return {
-    id: photoId,
-    url: `photos/${photoUrl}.jpg`,
+    id: index,
+    url: `photos/${index}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomPositiveInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
     comments: getCommentsList(getRandomPositiveInteger(1, COMMENTS_COUNT)),
@@ -128,23 +122,19 @@ function createUserPhotoDescription (photoId, photoUrl) {
 }
 
 // Собирает массив из объектов - описаний фото
-function getUserPhotodescription () {
+function getUserPhotoDescription () {
 
   const RESULT = [];
-  let photoId = USER_PHOTO_START_ID;
-  let photoUrl = PHOTO_URL_START_VALUE;
 
   for (let index = 1; index <= GENERATED_OBJECTS_COUNT; index++) {
-    RESULT.push(createUserPhotoDescription(photoId, photoUrl));
-    photoId++;
-    photoUrl++;
+    RESULT.push(createUserPhotoDescription(index));
   }
 
   return RESULT;
 
 }
 
-getUserPhotodescription(); //  Результат (можно вывести в консоль)
+getUserPhotoDescription(); //  Результат (можно вывести в консоль)
 
 // Запись результата в константу
-// const USER_PHOTO_DESCRIPTION = getUserPhotodescription();
+// const USER_PHOTO_DESCRIPTION = getUserPhotoDescription();
