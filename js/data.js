@@ -1,7 +1,5 @@
-// Вспомогательная функция для вычисления случайного числа из диапазона
 import {getRandomPositiveInteger} from './util.js';
 
-// Данные с описанием фотографий
 const DESCRIPTIONS = [
   'Скучное описание фотографии',
   'Еще одно скучное описание фотографии',
@@ -11,7 +9,6 @@ const DESCRIPTIONS = [
   'Заблудшая душа в мире безысходности',
 ];
 
-// Данные с комментариями
 const COMMENT_MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -21,7 +18,6 @@ const COMMENT_MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-// Данные с именами
 const NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -33,39 +29,18 @@ const NAMES = [
   'Вашингтон',
 ];
 
-// Количество сгенерированных объектов (по условию 25)
 const GENERATED_OBJECTS_COUNT = 25;
-
-// Минимальное количество лайков (по условию 15)
 const MIN_LIKES_COUNT = 15;
-
-// Максимальное количество лайков (по условию 200)
 const MAX_LIKES_COUNT = 200;
-
-// Минимальное значение в ссылке на аватар (по условию 1)
 const MIN_AVATAR_URL_VALUE = 1;
-
-// Максильное значение в ссылке на аватар (по условию 6)
 const MAX_AVATAR_URL_VALUE = 6;
-
-// Количество комментариев (по условию свободный выбор)
 const COMMENTS_COUNT = 8;
 
-// Возвращает случаный элемент произвольного массива
-function getRandomArrayElement (elements) {
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
-  return elements[getRandomPositiveInteger(0, elements.length - 1)];
+const getAvatarUrl = () => `img/avatar-${getRandomPositiveInteger(MIN_AVATAR_URL_VALUE, MAX_AVATAR_URL_VALUE)}.svg`;
 
-}
-
-// Собирает строку для ссылки на аватар со случайным значением
-function getAvatarUrl () {
-
-  return `img/avatar-${getRandomPositiveInteger(MIN_AVATAR_URL_VALUE, MAX_AVATAR_URL_VALUE)}.svg`;
-
-}
-
-// Собирает объект - комментарий
+// ошибка линтера при стрелочной функции
 function createComment (index) {
 
   return {
@@ -77,8 +52,7 @@ function createComment (index) {
 
 }
 
-// Собирает массив из объектов - комментариев
-function getCommentsList (commentsCount) {
+const getCommentsList = (commentsCount) => {
 
   const RESULT = [];
 
@@ -88,9 +62,9 @@ function getCommentsList (commentsCount) {
 
   return RESULT;
 
-}
+};
 
-// Собирает объект - описание фото
+// ошибка линтера при стрелочной функции
 function createUserPhotoDescription (index) {
 
   return {
@@ -103,8 +77,7 @@ function createUserPhotoDescription (index) {
 
 }
 
-// Собирает массив из объектов - описаний фото
-function getUserPhotoDescription () {
+const getUserPhotoDescription = () => {
 
   const RESULT = [];
 
@@ -114,6 +87,6 @@ function getUserPhotoDescription () {
 
   return RESULT;
 
-}
+};
 
 export {getUserPhotoDescription};
