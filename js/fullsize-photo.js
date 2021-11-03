@@ -17,7 +17,7 @@ const deleteCommentsList = () => {
 
 deleteCommentsList();
 
-const getCommentsList = (comment) => {
+const fillComment = (comment) => {
   const bigPictureSocialCommentFragment = bigPictureSocialComment.cloneNode(true);
   bigPictureSocialCommentFragment.querySelector('.social__picture').src = `${comment.avatar}`;
   bigPictureSocialCommentFragment.querySelector('.social__picture').alt = `${comment.name}`;
@@ -28,7 +28,7 @@ const getCommentsList = (comment) => {
 const openFullsizePhoto = (evt, userPhoto) => {
 
   evt.preventDefault();
-  userPhoto.comments.forEach(getCommentsList);
+  userPhoto.comments.forEach(fillComment);
   bigPictureElement.classList.remove('hidden');
   body.classList.add('modal-open');
   socialCommentsCount.classList.add('hidden');

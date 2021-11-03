@@ -40,17 +40,12 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
 
 const getAvatarUrl = () => `img/avatar-${getRandomPositiveInteger(MIN_AVATAR_URL_VALUE, MAX_AVATAR_URL_VALUE)}.svg`;
 
-// ошибка линтера при стрелочной функции
-function createComment (index) {
-
-  return {
-    id: index,
-    avatar: getAvatarUrl(),
-    message: `${getRandomArrayElement(COMMENT_MESSAGES)} ${getRandomArrayElement(COMMENT_MESSAGES)}`,
-    name:  getRandomArrayElement(NAMES),
-  };
-
-}
+const createComment = (index) => ({
+  id: index,
+  avatar: getAvatarUrl(),
+  message: `${getRandomArrayElement(COMMENT_MESSAGES)} ${getRandomArrayElement(COMMENT_MESSAGES)}`,
+  name:  getRandomArrayElement(NAMES),
+});
 
 const getCommentsList = (commentsCount) => {
 
@@ -65,17 +60,13 @@ const getCommentsList = (commentsCount) => {
 };
 
 // ошибка линтера при стрелочной функции
-function createUserPhotoDescription (index) {
-
-  return {
-    id: index,
-    url: `photos/${index}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomPositiveInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
-    comments: getCommentsList(getRandomPositiveInteger(1, COMMENTS_COUNT)),
-  };
-
-}
+const createUserPhotoDescription = (index) => ({
+  id: index,
+  url: `photos/${index}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomPositiveInteger(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
+  comments: getCommentsList(getRandomPositiveInteger(1, COMMENTS_COUNT)),
+});
 
 const getUserPhotoDescription = () => {
 
