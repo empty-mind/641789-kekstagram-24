@@ -1,6 +1,6 @@
 // Получение случайного положительного целого числа в заданном интервале, включительно
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-function getRandomPositiveInteger (numberOne, numberTwo) {
+const getRandomPositiveInteger = (numberOne, numberTwo) => {
 
   const lower = Math.ceil(Math.min(Math.abs(numberOne), Math.abs(numberTwo)));
   const upper = Math.floor(Math.max(Math.abs(numberOne), Math.abs(numberTwo)));
@@ -8,14 +8,10 @@ function getRandomPositiveInteger (numberOne, numberTwo) {
 
   return Math.floor(result);
 
-}
+};
 
 // Проверка максимальной длины строки
-function checkStringLength (string = '', length = 140) {
-
-  return string.length <= length;
-
-}
+const checkStringLength = (string = '', length = 140) => string.length <= length;
 
 export {
   getRandomPositiveInteger,
