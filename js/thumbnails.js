@@ -1,26 +1,23 @@
-
-import {getUserPhotoDescription} from './data.js';
-import {openFullsizePhoto} from './fullsize-photo.js';
+import {getUserPhotoDescriptionsList} from './data.js';
+import {openFullsizePhotoModal} from './fullsize-photo-modal.js';
 
 const userPhotoThumbnailElement = document.querySelector('.pictures');
 const userPhotoThumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const userPhotoThumbnails = getUserPhotoDescription();
-const thumbnailElement = document.createDocumentFragment();
+const userPhotoThumbnails = getUserPhotoDescriptionsList();
+const userPhotoThumbnailElementFragment = document.createDocumentFragment();
 
 userPhotoThumbnails.forEach((userPhoto) => {
+  const userPhotoElement = userPhotoThumbnailTemplate.cloneNode(true);
+  userPhotoElement.querySelector('.picture__img').src = `${userPhoto.url}`;
+  userPhotoElement.querySelector('.picture__likes').textContent = `${userPhoto.likes}`;
+  userPhotoElement.querySelector('.picture__comments').textContent = `${userPhoto.comments.length}`;
+  userPhotoThumbnailElementFragment.appendChild(userPhotoElement);
 
-  const userPhotoThumbnail = userPhotoThumbnailTemplate.cloneNode(true);
-  userPhotoThumbnail.querySelector('.picture__img').src = `${userPhoto.url}`;
-  userPhotoThumbnail.querySelector('.picture__likes').textContent = `${userPhoto.likes}`;
-  userPhotoThumbnail.querySelector('.picture__comments').textContent = `${userPhoto.comments.length}`;
-  thumbnailElement.appendChild(userPhotoThumbnail);
-
-  userPhotoThumbnail.addEventListener('click', (evt) => {
-    openFullsizePhoto(evt, userPhoto);
+  userPhotoElement.addEventListener('click', () => {
+    openFullsizePhotoModal(userPhoto);
   });
-
 });
 
-userPhotoThumbnailElement.appendChild(thumbnailElement);
+userPhotoThumbnailElement.appendChild(userPhotoThumbnailElementFragment);
 
 export {userPhotoThumbnailElement};
