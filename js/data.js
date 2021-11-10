@@ -48,7 +48,6 @@ const createComment = (index) => ({
 });
 
 const getCommentsList = (commentsCount) => {
-
   const RESULT = [];
 
   for (let index = 1; index <= commentsCount; index++) {
@@ -56,10 +55,8 @@ const getCommentsList = (commentsCount) => {
   }
 
   return RESULT;
-
 };
 
-// ошибка линтера при стрелочной функции
 const createUserPhotoDescription = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
@@ -68,8 +65,7 @@ const createUserPhotoDescription = (index) => ({
   comments: getCommentsList(getRandomPositiveInteger(1, COMMENTS_COUNT)),
 });
 
-const getUserPhotoDescription = () => {
-
+const getUserPhotoDescriptionsList = () => {
   const RESULT = [];
 
   for (let index = 1; index <= GENERATED_OBJECTS_COUNT; index++) {
@@ -77,7 +73,6 @@ const getUserPhotoDescription = () => {
   }
 
   return RESULT;
-
 };
 
-export {getUserPhotoDescription};
+export {getUserPhotoDescriptionsList};

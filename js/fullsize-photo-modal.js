@@ -1,3 +1,5 @@
+import {isEscapeKey} from './util.js';
+
 const bigPictureElement = document.querySelector('.big-picture');
 const bigPictureImgElement = bigPictureElement.querySelector('.big-picture__img');
 const bigPictureImgTag = bigPictureImgElement.querySelector('img');
@@ -18,16 +20,31 @@ const deleteCommentsList = () => {
 deleteCommentsList();
 
 const fillComment = (comment) => {
-  const bigPictureSocialCommentFragment = bigPictureSocialComment.cloneNode(true);
-  bigPictureSocialCommentFragment.querySelector('.social__picture').src = `${comment.avatar}`;
-  bigPictureSocialCommentFragment.querySelector('.social__picture').alt = `${comment.name}`;
-  bigPictureSocialCommentFragment.querySelector('.social__text').textContent = `${comment.message}`;
-  bigPictureSocialComments.append(bigPictureSocialCommentFragment);
+  const socialComment = bigPictureSocialComment.cloneNode(true);
+  socialComment.querySelector('.social__picture').src = `${comment.avatar}`;
+  socialComment.querySelector('.social__picture').alt = `${comment.name}`;
+  socialComment.querySelector('.social__text').textContent = `${comment.message}`;
+  bigPictureSocialComments.append(socialComment);
 };
 
-const openFullsizePhoto = (evt, userPhoto) => {
+const closeFullsizePhoto = () => {
+  bigPictureElement.classList.add('hidden');
+  body.classList.remove('modal-open');
+  deleteCommentsList();
 
-  evt.preventDefault();
+  // eslint ругается на вызов до определения,
+  // но в демке также - вызов до определения, как быть?
+  // document.removeEventListener('keydown', onModalEscKeydown);
+};
+
+const onModalEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeFullsizePhoto();
+  }
+};
+
+const openFullsizePhotoModal = (userPhoto) => {
   userPhoto.comments.forEach(fillComment);
   bigPictureElement.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -38,23 +55,12 @@ const openFullsizePhoto = (evt, userPhoto) => {
   commentsCount.textContent = `${userPhoto.comments.length}`;
   bigPictureDescription.textContent = `${userPhoto.description}`;
 
-};
-
-const closeFullsizePhoto = () => {
-
-  bigPictureElement.classList.add('hidden');
-  body.classList.remove('modal-open');
-
+  document.addEventListener('keydown', onModalEscKeydown);
 };
 
 bigPictureCancel.addEventListener('click', closeFullsizePhoto);
 
-document.addEventListener('keydown', (evt) => {
-
-  if (evt.key === 'Escape') {
-    closeFullsizePhoto();
-  }
-
-});
-
-export {openFullsizePhoto};
+export {
+  openFullsizePhotoModal,
+  closeFullsizePhoto
+};
