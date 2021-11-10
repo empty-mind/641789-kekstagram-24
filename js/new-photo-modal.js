@@ -2,7 +2,7 @@ import {isEscapeKey} from './util.js';
 import {checkStringLength} from './util.js';
 
 const MAX_COMMENT_LENGTH = 140;
-const MAX_HASHTAG_LEGTH = 20;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_COUNT = 5;
 
 const newPhotoForm = document.querySelector('.img-upload__form');
@@ -52,14 +52,13 @@ const checkHashtagValidity = () => {
       newPhotoFormHashtag.setCustomValidity('строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.');
     } else if (hashtag === '#') {
       newPhotoFormHashtag.setCustomValidity('хеш-тег не может состоять только из одной решётки');
-    } else if (hashtag.length > MAX_HASHTAG_LEGTH) {
+    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
       newPhotoFormHashtag.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку');
     } else if (toFindDuplicates(hashtags)) {
       newPhotoFormHashtag.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
     } else if (hashtags.length > MAX_HASHTAG_COUNT) {
       newPhotoFormHashtag.setCustomValidity('нельзя указать больше пяти хэш-тегов');
-    }
-    else {
+    } else {
       newPhotoFormHashtag.setCustomValidity('');
     }
   });
