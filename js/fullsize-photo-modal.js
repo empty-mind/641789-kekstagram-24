@@ -13,6 +13,10 @@ const bigPictureSocialComments = bigPictureElement.querySelector('.social__comme
 const bigPictureSocialComment = bigPictureElement.querySelector('.social__comment');
 const body = document.querySelector('body');
 
+const visibleCommentsCount = bigPictureElement.querySelector('.visible-comments-count');
+const COMMENTS_COUNT = 5;
+const loadComments = COMMENTS_COUNT;
+
 const deleteCommentsList = () => {
   bigPictureSocialComments.innerHTML = '';
 };
@@ -31,10 +35,7 @@ const closeFullsizePhoto = () => {
   bigPictureElement.classList.add('hidden');
   body.classList.remove('modal-open');
   deleteCommentsList();
-
-  // eslint ругается на вызов до определения,
-  // но в демке также - вызов до определения, как быть?
-  // document.removeEventListener('keydown', onModalEscKeydown);
+  visibleCommentsCount.textContent = COMMENTS_COUNT;
 };
 
 const onModalEscKeydown = (evt) => {
@@ -45,7 +46,6 @@ const onModalEscKeydown = (evt) => {
 };
 
 const openFullsizePhotoModal = (userPhoto) => {
-  userPhoto.comments.forEach(fillComment);
   bigPictureElement.classList.remove('hidden');
   body.classList.add('modal-open');
   socialCommentsCount.classList.add('hidden');
@@ -54,6 +54,27 @@ const openFullsizePhotoModal = (userPhoto) => {
   likesCount.textContent = `${userPhoto.likes}`;
   commentsCount.textContent = `${userPhoto.comments.length}`;
   bigPictureDescription.textContent = `${userPhoto.description}`;
+
+  const sliceComments = userPhoto.comments.slice(0, COMMENTS_COUNT);
+  sliceComments.forEach(fillComment);
+
+  const onLoadComments = () => {
+    const nextComments = userPhoto.comments.slice(loadComments, loadComments + COMMENTS_COUNT);
+    nextComments.forEach(fillComment);
+
+    if (visibleCommentsCount.textContent === userPhoto.comments.length) {
+      socialCommentsLoader.classList.add('hidden');
+    }
+    socialCommentsLoader.classList.add('hidden');
+    visibleCommentsCount.textContent = userPhoto.comments.length;
+
+  };
+
+  if (userPhoto.comments.length > COMMENTS_COUNT) {
+    socialCommentsCount.classList.remove('hidden');
+    socialCommentsLoader.classList.remove('hidden');
+    socialCommentsLoader.addEventListener('click', onLoadComments);
+  }
 
   document.addEventListener('keydown', onModalEscKeydown);
 };

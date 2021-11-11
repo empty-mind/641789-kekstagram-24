@@ -16,6 +16,7 @@ userPhotoThumbnails.forEach((userPhoto) => {
   userPhotoElement.addEventListener('click', () => {
     openFullsizePhotoModal(userPhoto);
   });
+
 });
 
 userPhotoThumbnailElement.appendChild(userPhotoThumbnailElementFragment);
