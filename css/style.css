@@ -1416,3 +1416,14 @@ main {
 .hidden {
   display: none;
 }
+
+.error-message {
+  padding: 50px 50px;
+  font-size: 30px;
+  text-align: center;
+  background-color:rgba(255, 0, 0, 0.7);
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 20%;
+}
