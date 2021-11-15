@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {checkStringLength} from './util.js';
+import {sendData} from './api.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
@@ -13,6 +14,11 @@ const newPhotoFormComment = newPhotoForm.querySelector('.text__description');
 const newPhotoFormHashtag = newPhotoForm.querySelector('.text__hashtags');
 const hashtagRegularValue = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
 const body = document.querySelector('body');
+const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreviewImg = imgUploadPreview.querySelector('img');
+const successUploadPhoto = document.querySelector('#success').content.querySelector('.success');
+const errorUploadPhoto = document.querySelector('#error').content.querySelector('.error');
+const effectLevelSlider = document.querySelector('.effect-level__slider');
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -66,7 +72,7 @@ const checkHashtagValidity = () => {
   newPhotoFormHashtag.reportValidity('');
 };
 
-newPhotoFormCancel.addEventListener('click', () => {
+const closeNewPhotoForm = () => {
   newPhotoFormModal.classList.add('hidden');
   body.classList.remove('modal-open');
   newPhotoForm.reset();
@@ -74,14 +80,59 @@ newPhotoFormCancel.addEventListener('click', () => {
   newPhotoFormHashtag.removeEventListener('keydown', cancelEscKeydown);
   newPhotoFormComment.removeEventListener('input', checkCommentValidity);
   newPhotoFormHashtag.removeEventListener('input', checkHashtagValidity);
-});
+  imgUploadPreviewImg.style.filter = '';
+  imgUploadPreviewImg.style.transform = '';
+  imgUploadPreviewImg.className = '';
+  effectLevelSlider.noUiSlider.reset();
+};
 
-newPhotoFormInput.addEventListener('change', () => {
-  newPhotoFormModal.classList.remove('hidden');
-  body.classList.add('modal-open');
-  newPhotoFormComment.addEventListener('keydown', cancelEscKeydown);
-  newPhotoFormHashtag.addEventListener('keydown', cancelEscKeydown);
-  document.addEventListener('keydown', onModalEscKeydown);
-  newPhotoFormComment.addEventListener('input', checkCommentValidity);
-  newPhotoFormHashtag.addEventListener('input', checkHashtagValidity);
-});
+newPhotoFormCancel.addEventListener('click', closeNewPhotoForm);
+
+const openNewPhotoForm = () => {
+  newPhotoFormInput.addEventListener('change', () => {
+    newPhotoFormModal.classList.remove('hidden');
+    body.classList.add('modal-open');
+    newPhotoFormComment.addEventListener('keydown', cancelEscKeydown);
+    newPhotoFormHashtag.addEventListener('keydown', cancelEscKeydown);
+    document.addEventListener('keydown', onModalEscKeydown);
+    newPhotoFormComment.addEventListener('input', checkCommentValidity);
+    newPhotoFormHashtag.addEventListener('input', checkHashtagValidity);
+  });
+};
+
+openNewPhotoForm();
+
+const onSuccessSendDataMessage = () => {
+  body.append(successUploadPhoto);
+  successUploadPhoto.addEventListener('click', () => {
+    successUploadPhoto.remove();
+  });
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      successUploadPhoto.remove();
+    }
+  });
+};
+
+const onFailSendDataMessage = () => {
+  body.append(errorUploadPhoto);
+  errorUploadPhoto.addEventListener('click', () => {
+    errorUploadPhoto.remove();
+  });
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      errorUploadPhoto.remove();
+    }
+  });
+};
+
+const newPhotoFormSubmit = () => {
+  newPhotoForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(onSuccessSendDataMessage, onFailSendDataMessage, new FormData(evt.target));
+    closeNewPhotoForm();
+  });
+
+};
+
+newPhotoFormSubmit();
