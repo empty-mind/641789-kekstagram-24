@@ -1,4 +1,4 @@
-const getData = (onSuccess, onFail) => {
+const getData = (onFail, ...onSuccess) => {
   fetch('https://24.javascript.pages.academy/kekstagram/data')
     .then((response) => {
       if (response.ok) {
@@ -8,7 +8,10 @@ const getData = (onSuccess, onFail) => {
       }
     })
     .then((data) => {
-      onSuccess(data);
+      onSuccess.forEach((onSuccessFunction) => onSuccessFunction(data));
+    })
+    .catch(() => {
+      onFail('Не удалось загрузить данные. Попробуйте позже.');
     });
 };
 
