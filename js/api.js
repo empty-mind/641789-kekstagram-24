@@ -9,6 +9,9 @@ const getData = (onSuccess, onFail) => {
     })
     .then((data) => {
       onSuccess(data);
+    })
+    .catch(() => {
+      onFail('Не удалось загрузить данные. Попробуйте позже.');
     });
 };
 
