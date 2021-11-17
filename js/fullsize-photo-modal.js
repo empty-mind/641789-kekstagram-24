@@ -15,7 +15,7 @@ const body = document.querySelector('body');
 
 const visibleCommentsCount = bigPictureElement.querySelector('.visible-comments-count');
 const COMMENTS_COUNT = 5;
-const loadComments = COMMENTS_COUNT;
+let loadComments = COMMENTS_COUNT;
 
 const deleteCommentsList = () => {
   bigPictureSocialComments.innerHTML = '';
@@ -32,9 +32,9 @@ const fillComment = (comment) => {
 };
 
 const closeFullsizePhoto = () => {
+  deleteCommentsList();
   bigPictureElement.classList.add('hidden');
   body.classList.remove('modal-open');
-  deleteCommentsList();
   visibleCommentsCount.textContent = COMMENTS_COUNT;
 };
 
@@ -61,12 +61,18 @@ const openFullsizePhotoModal = (userPhoto) => {
   const onLoadComments = () => {
     const nextComments = userPhoto.comments.slice(loadComments, loadComments + COMMENTS_COUNT);
     nextComments.forEach(fillComment);
+    visibleCommentsCount.textContent = bigPictureSocialComment.length;
 
-    if (visibleCommentsCount.textContent === userPhoto.comments.length) {
+    if (bigPictureSocialComment.textContent === userPhoto.comments.length) {
       socialCommentsLoader.classList.add('hidden');
     }
-    socialCommentsLoader.classList.add('hidden');
-    visibleCommentsCount.textContent = userPhoto.comments.length;
+    loadComments = loadComments + COMMENTS_COUNT;
+
+    visibleCommentsCount.textContent = loadComments;
+    if (loadComments > userPhoto.comments.length) {
+      visibleCommentsCount.textContent = userPhoto.comments.length;
+      socialCommentsLoader.classList.add('hidden');
+    }
 
   };
 
