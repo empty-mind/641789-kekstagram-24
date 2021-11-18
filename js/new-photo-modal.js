@@ -1,5 +1,5 @@
-import {isEscapeKey} from './util.js';
-import {checkStringLength} from './util.js';
+import {isEscapeKey} from './utils/is-escape-key.js';
+import {checkStringLength} from './utils/check-string-length.js';
 import {sendData} from './api.js';
 
 const MAX_COMMENT_LENGTH = 140;
@@ -19,6 +19,7 @@ const imgUploadPreviewImg = imgUploadPreview.querySelector('img');
 const successUploadPhoto = document.querySelector('#success').content.querySelector('.success');
 const errorUploadPhoto = document.querySelector('#error').content.querySelector('.error');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
+const effectLevel = document.querySelector('.effect-level');
 
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -33,7 +34,7 @@ const cancelEscKeydown = (evt) => {
   evt.stopPropagation();
 };
 
-const checkCommentValidity = () => {
+const onInputCheckCommentValidity = () => {
   const commentLength = checkStringLength(newPhotoFormComment.value, MAX_COMMENT_LENGTH);
   if (!commentLength) {
     newPhotoFormComment.setCustomValidity('Длина комментария не может составлять больше 140 символов.');
@@ -43,9 +44,9 @@ const checkCommentValidity = () => {
   newPhotoFormComment.reportValidity();
 };
 
-const toFindDuplicates = (array) => ((new Set(array)).size < array.length); // нашел решение в гугле
+const toFindDuplicates = (array) => ((new Set(array)).size < array.length);
 
-const checkHashtagValidity = () => {
+const onInputCheckHashtagValidity = () => {
   const hashtags = newPhotoFormHashtag.value.toLowerCase().split(' ');
 
   hashtags.forEach((hashtag) => {
@@ -72,21 +73,21 @@ const checkHashtagValidity = () => {
   newPhotoFormHashtag.reportValidity('');
 };
 
-const closeNewPhotoForm = () => {
+const onNewImageUploadCloseClick = () => {
   newPhotoFormModal.classList.add('hidden');
   body.classList.remove('modal-open');
   newPhotoForm.reset();
   newPhotoFormComment.removeEventListener('keydown', cancelEscKeydown);
   newPhotoFormHashtag.removeEventListener('keydown', cancelEscKeydown);
-  newPhotoFormComment.removeEventListener('input', checkCommentValidity);
-  newPhotoFormHashtag.removeEventListener('input', checkHashtagValidity);
+  newPhotoFormComment.removeEventListener('input', onInputCheckCommentValidity);
+  newPhotoFormHashtag.removeEventListener('input', onInputCheckHashtagValidity);
   imgUploadPreviewImg.style.filter = '';
   imgUploadPreviewImg.style.transform = '';
   imgUploadPreviewImg.className = '';
   effectLevelSlider.noUiSlider.reset();
 };
 
-newPhotoFormCancel.addEventListener('click', closeNewPhotoForm);
+newPhotoFormCancel.addEventListener('click', onNewImageUploadCloseClick);
 
 const openNewPhotoForm = () => {
   newPhotoFormInput.addEventListener('change', () => {
@@ -95,8 +96,9 @@ const openNewPhotoForm = () => {
     newPhotoFormComment.addEventListener('keydown', cancelEscKeydown);
     newPhotoFormHashtag.addEventListener('keydown', cancelEscKeydown);
     document.addEventListener('keydown', onModalEscKeydown);
-    newPhotoFormComment.addEventListener('input', checkCommentValidity);
-    newPhotoFormHashtag.addEventListener('input', checkHashtagValidity);
+    newPhotoFormComment.addEventListener('input', onInputCheckCommentValidity);
+    newPhotoFormHashtag.addEventListener('input', onInputCheckHashtagValidity);
+    effectLevel.style.display = 'none';
   });
 };
 
@@ -130,7 +132,7 @@ const newPhotoFormSubmit = () => {
   newPhotoForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     sendData(onSuccessSendDataMessage, onFailSendDataMessage, new FormData(evt.target));
-    closeNewPhotoForm();
+    onNewImageUploadCloseClick();
   });
 
 };
