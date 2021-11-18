@@ -13,7 +13,7 @@ const effectsList = document.querySelector('.effects__list');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const effectLevel = document.querySelector('.effect-level');
 
-const reducePhotoScale = () => {
+const onPhotoScaleControlSmallerClick = () => {
   const value = parseFloat(scaleControlValue.value);
   if (value !== SCALE_MIN_VALUE) {
     scaleControlValue.value = `${value - SCALE_STEP_VALUE}%`;
@@ -21,7 +21,7 @@ const reducePhotoScale = () => {
   }
 };
 
-const increasePhotoScale = () => {
+const onPhotoScaleControlBiggerClick = () => {
   const value = parseFloat(scaleControlValue.value);
   if (value !== SCALE_DEFAULT_VALUE) {
     scaleControlValue.value = `${value + SCALE_STEP_VALUE}%`;
@@ -29,8 +29,8 @@ const increasePhotoScale = () => {
   }
 };
 
-scaleControlSmaller.addEventListener('click', reducePhotoScale);
-scaleControlBigger.addEventListener('click', increasePhotoScale);
+scaleControlSmaller.addEventListener('click', onPhotoScaleControlSmallerClick);
+scaleControlBigger.addEventListener('click', onPhotoScaleControlBiggerClick);
 
 noUiSlider.create(effectLevelSlider, {
   range: {
@@ -74,6 +74,8 @@ effectLevelSlider.noUiSlider.on('update', (values, handle) => {
 
 effectsList.addEventListener('change', (evt) => {
   if (evt.target.matches('#effect-none')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--none');
     effectLevel.style.display = 'none';
   } else {
@@ -81,6 +83,8 @@ effectsList.addEventListener('change', (evt) => {
   }
 
   if (evt.target.matches('#effect-chrome')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--chrome');
     effectLevelSlider.noUiSlider.updateOptions({
       range: {
@@ -96,6 +100,8 @@ effectsList.addEventListener('change', (evt) => {
   }
 
   if (evt.target.matches('#effect-sepia')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--sepia');
     effectLevelSlider.noUiSlider.updateOptions({
       range: {
@@ -111,6 +117,8 @@ effectsList.addEventListener('change', (evt) => {
   }
 
   if (evt.target.matches('#effect-marvin')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--marvin');
     effectLevelSlider.noUiSlider.updateOptions({
       range: {
@@ -126,6 +134,8 @@ effectsList.addEventListener('change', (evt) => {
   }
 
   if (evt.target.matches('#effect-phobos')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--phobos');
     effectLevelSlider.noUiSlider.updateOptions({
       range: {
@@ -141,6 +151,8 @@ effectsList.addEventListener('change', (evt) => {
   }
 
   if (evt.target.matches('#effect-heat')) {
+    scaleControlValue.value = `${SCALE_DEFAULT_VALUE}%`;
+    imgUploadPreviewImg.style.transform = `scale(${SCALE_DEFAULT_VALUE / 100})`;
     imgUploadPreviewImg.classList.add('effects__preview--heat');
     effectLevelSlider.noUiSlider.updateOptions({
       range: {
@@ -155,8 +167,3 @@ effectsList.addEventListener('change', (evt) => {
     imgUploadPreviewImg.style.filter = '';
   }
 });
-
-export {
-  reducePhotoScale,
-  increasePhotoScale
-};

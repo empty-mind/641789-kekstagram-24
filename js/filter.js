@@ -1,6 +1,6 @@
 import {getUserPhotoDescriptionsList} from './thumbnails.js';
 import {debounce} from './utils/debounce.js';
-import {getRandomPositiveInteger} from './util.js';
+import {getRandomPositiveInteger} from './utils/get-random-positive-integer.js';
 
 const RANDOM_NOREPEAT_PHOTOS_COUNT = 10;
 const RERENDER_DELAY = 500;
@@ -22,29 +22,29 @@ const getRandomPhotos = (array) => {
 const filterPhotos = (array) => {
   getUserPhotoDescriptionsList(array);
   const delayRender = debounce(getUserPhotoDescriptionsList, RERENDER_DELAY);
-  let rerenderArray = [];
+  let rerenderPhotos = [];
   imgFiltersForm.addEventListener('click', (evt) => {
     evt.preventDefault();
     const copyArray = array.slice();
     if (evt.target.matches('#filter-default')) {
-      rerenderArray = copyArray;
+      rerenderPhotos = copyArray;
       imgFiltersButtonDefault.classList.add('img-filters__button--active');
       imgFiltersButtonRandom.classList.remove('img-filters__button--active');
       imgFiltersButtondiscussed.classList.remove('img-filters__button--active');
     }
     if (evt.target.matches('#filter-random')) {
-      rerenderArray = getRandomPhotos(copyArray);
+      rerenderPhotos = getRandomPhotos(copyArray);
       imgFiltersButtonDefault.classList.remove('img-filters__button--active');
       imgFiltersButtonRandom.classList.add('img-filters__button--active');
       imgFiltersButtondiscussed.classList.remove('img-filters__button--active');
     }
     if (evt.target.matches('#filter-discussed')) {
-      rerenderArray = copyArray.sort(getCommentsRank);
+      rerenderPhotos = copyArray.sort(getCommentsRank);
       imgFiltersButtonDefault.classList.remove('img-filters__button--active');
       imgFiltersButtonRandom.classList.remove('img-filters__button--active');
       imgFiltersButtondiscussed.classList.add('img-filters__button--active');
     }
-    delayRender(rerenderArray);
+    delayRender(rerenderPhotos);
   });
 };
 
