@@ -5,6 +5,7 @@ import {sendData} from './api.js';
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAG_COUNT = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const newPhotoForm = document.querySelector('.img-upload__form');
 const newPhotoFormInput = newPhotoForm.querySelector('.img-upload__input');
@@ -20,15 +21,7 @@ const successUploadPhoto = document.querySelector('#success').content.querySelec
 const errorUploadPhoto = document.querySelector('#error').content.querySelector('.error');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevel = document.querySelector('.effect-level');
-
-const onModalEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    newPhotoFormModal.classList.add('hidden');
-    body.classList.remove('modal-open');
-    newPhotoForm.reset();
-  }
-};
+const fileUpload = document.querySelector('#upload-file');
 
 const cancelEscKeydown = (evt) => {
   evt.stopPropagation();
@@ -73,6 +66,23 @@ const onInputCheckHashtagValidity = () => {
   newPhotoFormHashtag.reportValidity('');
 };
 
+const onModalEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    newPhotoFormModal.classList.add('hidden');
+    body.classList.remove('modal-open');
+    newPhotoForm.reset();
+    newPhotoFormComment.removeEventListener('keydown', cancelEscKeydown);
+    newPhotoFormHashtag.removeEventListener('keydown', cancelEscKeydown);
+    newPhotoFormComment.removeEventListener('input', onInputCheckCommentValidity);
+    newPhotoFormHashtag.removeEventListener('input', onInputCheckHashtagValidity);
+    imgUploadPreviewImg.style.filter = '';
+    imgUploadPreviewImg.style.transform = '';
+    imgUploadPreviewImg.className = '';
+    effectLevelSlider.noUiSlider.reset();
+  }
+};
+
 const onNewImageUploadCloseClick = () => {
   newPhotoFormModal.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -88,6 +98,16 @@ const onNewImageUploadCloseClick = () => {
 };
 
 newPhotoFormCancel.addEventListener('click', onNewImageUploadCloseClick);
+
+fileUpload.addEventListener('change', (evt) => {
+  const file = evt.target.files[0];
+  const fileURL = URL.createObjectURL(file);
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imgUploadPreviewImg.src = fileURL;
+  }
+});
 
 const openNewPhotoForm = () => {
   newPhotoFormInput.addEventListener('change', () => {
